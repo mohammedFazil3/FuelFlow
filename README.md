@@ -4,12 +4,11 @@ A web-based solution for petrol station management, catering to administrators, 
 
 ## Table of Contents
 
-- [Features](#features)
-- [Installation](#installation)
-- [Usage](#usage)
-- [Folder Structure](#folder-structure)
-- [Contributing](#contributing) (Optional)
-- [License](#license)
+-   [Features](#features)
+-   [Installation](#installation)
+-   [Usage](#usage)
+-   [Folder Structure](#folder-structure)
+-   [Demo Screenshots](#demo-screenshots)
 
 ## Features
 
@@ -62,3 +61,27 @@ After completing the installation steps and setting up the database:
 *   `persistence.js`: Handles direct communication with the MongoDB database.
 *   `business.js`: Contains the application's business logic, interacting with the presentation and persistence layers.
 *   `presentation.js`: Handles interactions with the user/frontend.
+
+
+## Demo Screenshots
+
+*   **Administrator Dashboard:**
+    ![Administrator Dashboard](screenshots/admin_view.png)
+    *   Description: This screenshot shows admin dashboard which provides an overview of all stations, current fuel prices, and options for managing users and stations.
+
+*   **Station Manager View:**
+    ![Station Manager View](screenshots/manager_view.png)
+    *   Description: This screenshot displays the interface for station managers to record daily sales and fuel levels, view current pricing, and access historical data.
+
+*   **Public View:**
+    ![Public View](screenshots/public_view.png)
+    *   Description: This screenshot shows the public view with a list of stations, their locations, current fuel prices, and fuel availability status.
+
+**Registered/Logged-in User View:**
+    ![Registered User View](screenshots/registered_users_view.png)
+    *   Description: This screenshot demonstrates the interface for logged-in users to manage their profiles (e.g., changing password, updating contact information).
+
+*   **Running the Application:**
+    ![Running FuelFlow](screenshots/run.png)
+    *   Description: This screenshot demonstrates how to run the application using the command `node htmlpresentation.js` in the terminal.
+
