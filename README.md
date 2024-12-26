@@ -62,15 +62,3 @@ After completing the installation steps and setting up the database:
 *   `persistence.js`: Handles direct communication with the MongoDB database.
 *   `business.js`: Contains the application's business logic, interacting with the presentation and persistence layers.
 *   `presentation.js`: Handles interactions with the user/frontend.
-
-## Contributing
-
-(Optional: Add specific guidelines if you want others to contribute)
-
-Contributions are welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for more information. (Create this file if you include contributing guidelines)
-
-## License
-
-(Add your project's license, e.g., MIT, GPL, Apache 2.0)
-
-This project is licensed under the MIT License. See [LICENSE](LICENSE) for details. (Create this file if using a specific license)
