@@ -1,0 +1,71 @@
+[{
+  "_id": {
+    "$oid": "6554a0bc21e8d1cb3bcc7070"
+  },
+  "stationID": "3",
+  "fuelLevelPremium": 2000,
+  "fuelLevelSuper": 900,
+  "fuelPriceSuper": 2.4,
+  "fuelPricePremium": 2.9,
+  "sales": 7000,
+  "location": "Al Khor",
+  "managers": [
+    "john"
+  ],
+  "locationLink": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d57542.34312894857!2d51.46129013260156!3d25.65814971849157!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e45f9c6ed8bde33%3A0x7c1baaa723fc991!2sAl%20Khor!5e0!3m2!1sen!2sqa!4v1699980822902!5m2!1sen!2sqa",
+  "name": "khor petrol station"
+},
+{
+  "_id": {
+    "$oid": "6554a0bc21e8d1cb3bcc706e"
+  },
+  "stationID": "1",
+  "fuelLevelPremium": 10,
+  "fuelLevelSuper": 10,
+  "fuelPriceSuper": 2.5,
+  "fuelPricePremium": 3,
+  "sales": 152594,
+  "location": "Doha",
+  "managers": [
+    "tom",
+    "noel",
+    "cbum",
+    "shizzy"
+  ],
+  "locationLink": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d230886.62907648235!2d51.34718420230544!3d25.283917556404223!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e45c534ffdce87f%3A0x44d9319f78cfd4b1!2sDoha!5e0!3m2!1sen!2sqa!4v1699980789542!5m2!1sen!2sqa",
+  "name": "Doha petrol station"
+},
+{
+  "_id": {
+    "$oid": "6554a0bc21e8d1cb3bcc706f"
+  },
+  "stationID": "2",
+  "fuelLevelPremium": 888,
+  "fuelLevelSuper": 888,
+  "fuelPriceSuper": 2,
+  "fuelPricePremium": 4,
+  "sales": 4001,
+  "location": "Al Wakrah",
+  "managers": [
+    "mark"
+  ],
+  "locationLink": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d57779.14748330261!2d51.6000091!3d25.1628347!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e45cb78c82fd52f%3A0x16b573f988575d05!2sAl%20Wakrah!5e0!3m2!1sen!2sqa!4v1701333296098!5m2!1sen!2sqa",
+  "name": "wakrah petrol station"
+},
+{
+  "_id": {
+    "$oid": "6555286a37147e8b1aeaa310"
+  },
+  "stationID": "4",
+  "fuelLevelPremium": 1800,
+  "fuelLevelSuper": 2200,
+  "fuelPriceSuper": 2.65,
+  "fuelPricePremium": 3.1,
+  "sales": 5500,
+  "location": "Umm Salal",
+  "managers": [
+    "sara"
+  ],
+  "locationLink": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d57672.683816979935!2d51.4296840426785!3d25.488841432317457!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e450fead04b4b1b%3A0x4a7961c27af470f9!2sUmm%20Salal!5e0!3m2!1sen!2sqa!4v1699980866550!5m2!1sen!2sqa",
+  "name": "umm salal petrol station"
+}]

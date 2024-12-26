@@ -1,0 +1,197 @@
+
+<body>
+    <div id="id-page" class="spa-page">
+        <div class="row">
+            <div class="col-12">
+                <div class="card mb-4">
+                    <div class="card-header"><strong>Enter a station ID:</strong></div>
+                    <div class="card-body">
+                        <div class="example">
+                            <div class="tab-content rounded-bottom">
+                                <div class="tab-pane p-3 active preview" role="tabpanel" id="preview-1000">   
+                                    <div class="mb-3">
+                                        <label class="form-label">Enter station ID:</label>
+                                        <input class="form-control" type="text" id="ID" name="ID" onblur="validateID()">
+                                    </div>    
+                                    <button class="btn btn-primary mb-3" type="button" onclick="loadForm()" >Edit Station</button>                     
+                                    <span id = 'error-mssg' style="display: none;"></span><br><br>
+                                </div>
+                                {{#if message}}
+                                    <div style="color:red">{{message}}</div>
+                                {{/if}}
+                            </div> 
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="edit-page" class="spa-page"></div>
+</body>
+
+<script>
+    async function loadForm(){
+
+        if(! await validateID()){
+            return
+        }
+        let stID = document.getElementById('ID').value
+
+        let response = await fetch(`/api/admin/station/${stID}`)
+        let records = await response.json()
+
+        let name = records.name;
+        let ID = records.stationID;
+        let flp=records.fuelLevelPremium
+        let fls=records.fuelLevelSuper
+        let fps=records.fuelPriceSuper
+        let fpp=records.fuelPricePremium
+        let sale=records.sales
+        let loc=records.location
+        let managers=records.managers
+        let locLink=records.locationLink
+
+        let html = `
+        <body>
+            <div class="row">
+                <div class="col-12">
+                    <div class="card mb-4">
+                        <div class="card-header"><strong>Edit station</strong></div>
+                        <div class="card-body">
+                            <div class="example">
+                                <div class="tab-content rounded-bottom">
+                                    <div class="tab-pane p-3 active preview" role="tabpanel" id="preview-1000">
+                                        <div class="mb-3">
+                                            <label class="form-label">Station ID</label>
+                                            <input class="form-control" type="text" id="stationID" name="stationID" value="${ID}" readonly>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">Station Name:</label>
+                                            <input class="form-control" type="text" id="name" name="name" value="${name}">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">Fuel Level Premium:</label>
+                                            <input class="form-control" type="number" id="fuelLevelPremium" name="fuelLevelPremium" value="${flp}">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">Fuel Level Super:</label>
+                                            <input class="form-control" type="number" id="fuelLevelSuper" name="fuelLevelSuper" value="${fls}">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">Fuel Price Super:</label>
+                                            <input class="form-control" type="number" id="fuelPriceSuper" name="fuelPriceSuper" value="${fps}">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">Fuel Price Premium:</label>
+                                            <input class="form-control" type="number" id="fuelPricePremium" name="fuelPricePremium" value="${fpp}">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">Sales:</label>
+                                            <input class="form-control" type="number" id="sales" name="sales" value="${sale}">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">Enter Location:</label>
+                                            <input class="form-control" type="text" id="location" name="location" value="${loc}">
+                                        </div>
+                                        <div class="mb-3" style="display:none">
+                                            <label class="form-label">Managers:</label>
+                                            <input class="form-control" type="text" id="managers" name="managers" value="${managers}">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">Enter Location Link:</label>
+                                            <input class="form-control" type="text" id="locationLink" name="locationLink" value="${locLink}">
+                                        </div>                                        
+                                        <button class="btn btn-primary mb-3" onclick="editStation()">Save Changes</button>                                        
+                                    </div>
+                                    <div id="error-message" style="color:red"></div>
+                                    {{#if message}}
+                                        <div style="color:red">{{message}}</div>
+                                    {{/if}}
+                                </div> 
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </body>
+        `
+        
+        document.getElementById("edit-page").innerHTML = html        
+    }
+
+    async function editStation(){
+
+        // Get form inputs
+        var ID = document.getElementById("stationID").value;
+        var name = document.getElementById("name").value;
+        var fuelLevelPremium = Number(document.getElementById("fuelLevelPremium").value);
+        var fuelLevelSuper = Number(document.getElementById("fuelLevelSuper").value);
+        var fuelPriceSuper = Number(document.getElementById("fuelPriceSuper").value);
+        var fuelPricePremium = Number(document.getElementById("fuelPricePremium").value);
+        var sales = Number(document.getElementById("sales").value);
+        var location = document.getElementById("location").value;
+        var locationLink = document.getElementById("locationLink").value;
+        var managers = Array(document.getElementById("managers").value);
+
+        // Get error message element
+        var errorMessage = document.getElementById("error-message");
+
+        // Validate inputs
+        if (!name || !fuelLevelPremium || !fuelLevelSuper || !fuelPriceSuper || !fuelPricePremium || !location || !locationLink) {
+            errorMessage.innerHTML = "All fields must be filled out";
+            return
+        }
+        else{
+            errorMessage.style.display = "none"
+            
+            let update={
+                stationID:ID,
+                fuelLevelPremium:fuelLevelPremium,
+                fuelLevelSuper:fuelLevelSuper,
+                fuelPriceSuper:fuelPriceSuper,
+                fuelPricePremium:fuelPricePremium,
+                sales:sales,
+                location:location,
+                managers:managers,
+                locationLink:locationLink,
+                name:name
+            }
+            await fetch(`/api/admin/station`,{
+                method:"PUT",
+                headers:{
+                    'Content-Type':'application/json'
+                },
+                body:JSON.stringify(update)
+            })   
+            document.getElementById("edit-page").innerHTML = ""
+        }
+    }
+
+    function switchPage(page) {
+        let availPages = document.getElementsByClassName('spa-page')
+        for (let p of availPages) {
+            p.style.display = 'none'
+        }
+        document.getElementById(page).style.display = 'block'
+    }
+
+    async function validateID(){
+        let response = await fetch('/api/admin/station')
+        let records = await response.json()
+
+        let input = document.getElementById('ID')
+        let error = document.getElementById('error-mssg')
+        if(input.value.trim()=="" || isNaN(Number(input.value)) || input.value>records.length){
+            error.innerHTML = "Please Enter a Valid ID";
+            error.style.color="red"
+            error.style.display="block"
+            return false
+        }
+        else{
+            error.innerHTML=""
+            error.style.color="black"
+            error.style.display="none"
+            return true
+        }
+    }
+</script>

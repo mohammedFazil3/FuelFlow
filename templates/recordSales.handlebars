@@ -1,0 +1,43 @@
+<body>
+    <div class="row">
+        <div class="col-12">
+            <div class="card mb-4">
+                <div class="card-header"><strong>Record Sales</strong></div>
+                <div class="card-body">
+                    <div class="example">
+                        <div class="tab-content rounded-bottom">
+                            <form method="post" action="/record-sales/{{id}}">
+                            <div class="tab-pane p-3 active preview" role="tabpanel" id="preview-1000">
+                                <div class="mb-3">
+                                    <label class="form-label" for="date">Select Date:</label>
+                                    <input class="form-control" type="date" id="date" name="date">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label" for="premiumSales">Premium Petrol Sold Today(QAR):</label>
+                                    <input class="form-control" type="number" id="premiumSales" name="premiumSales">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label" for="superSales">Super Petrol Sold Today(QAR):</label>
+                                    <input class="form-control" type="number" id="superSales" name="superSales">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label" for="fuelLevelPremium">Liters of Premium Petrol Available:</label>
+                                    <input class="form-control" type="number" id="fuelLevelPremium" name="fuelLevelPremium">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label" for="fuelLevelSuper">Liters of Super Petrol Available:</label>
+                                    <input class="form-control" type="number" id="fuelLevelSuper" name="fuelLevelSuper">
+                                </div>                                        
+                                <button class="btn btn-primary mb-3" type="submit">Submit</button>                                        
+                            </div>
+                            </form>
+                            {{#if message}}
+                                <div style="color:red">{{message}}</div>
+                            {{/if}}
+                        </div> 
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>

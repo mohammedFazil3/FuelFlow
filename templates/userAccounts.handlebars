@@ -1,0 +1,75 @@
+          <div class="row">
+            <div class="col-md-12">
+              <div class="card mb-4">
+                <div class="card-header">User Accounts</div>
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-sm-6">
+                        <div class="table-responsive">
+                            <h4 class="card-title mb-0" style="text-align:center">Manager User Accounts</h4>
+                            <br>
+                            <table class="table border mb-0">
+                            <thead class="table-light fw-semibold">
+                                <tr class="align-middle">
+                                <th class="text-center">
+                                    <svg class="icon">
+                                    <use xlink:href="vendors/@coreui/icons/svg/free.svg#cil-people"></use>
+                                    </svg>
+                                </th>
+                                <th>User</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {{#each managerUsers}}
+                                <tr class="align-middle">
+                                <td class="text-center">
+                                    <div class="avatar avatar-md"><img class="avatar-img" src="/static/assets/img/avatars/{{this.userId}}.jpg" alt="{{this.userId}}@email.com"><span class="avatar-status bg-success"></span></div>
+                                </td>
+                                <td>
+                                    <div>{{this.username}}</div>
+                                    <div class="small text-medium-emphasis"> Registered: {{this.registeredDate}}</div>
+                                </td>
+                                </tr>
+                                {{/each}}
+                            </tbody>
+                            </table>
+                        </div>                        
+                    </div>
+                    <!-- /.col-->
+  <div class="col-sm-6">
+                        <div class="table-responsive">
+                            <h4 class="card-title mb-0" style="text-align:center">Standard User Accounts</h4>
+                            <br>
+                            <table class="table border mb-0">
+                            <thead class="table-light fw-semibold">
+                                <tr class="align-middle">
+                                <th class="text-center">
+                                    <svg class="icon">
+                                    <use xlink:href="vendors/@coreui/icons/svg/free.svg#cil-people"></use>
+                                    </svg>
+                                </th>
+                                <th>User</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {{#each standardUsers}}
+                                <tr class="align-middle">
+                                <td class="text-center">
+                                    <div class="avatar avatar-md"><img class="avatar-img" src="/static/assets/img/avatars/{{this.userId}}.jpg" alt="{{this.username}}@email.com"><span class="avatar-status bg-success"></span></div>
+                                </td>
+                                <td>
+                                    <div>{{this.username}}</div>
+                                    <div class="small text-medium-emphasis"> Registered: {{this.registeredDate}}</div>
+                                </td>
+                                </tr>
+                                {{/each}}
+                            </tbody>
+                            </table>
+                        </div>                        
+                    </div>
+                    <!-- /.col-->
+                    </div>
+                  </div>
+              </div>
+            </div>
+          </div>

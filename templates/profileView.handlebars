@@ -1,0 +1,378 @@
+<head>
+    <style>
+        .profile-pic{
+            width: 80px;  
+            height: 84px;  
+            margin-bottom: 8px;   
+        }
+        .profile-pic img{
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+<div class="row">
+    <div class="col-12">
+        <div class="card mb-4">
+            <div class="card-header"><strong>Edit Profile</strong></div>
+            <div class="card-body">
+                <div class="example">
+                    <div class="tab-content rounded-bottom">
+                        <div id="landing-page" class="spa-page">
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <div class="profile-pic"><img src="/static/assets/img/avatars/{{userId}}.jpg"></div>
+                                </div>
+                                <div class="col-md-4">
+                                    <form method="post" action="/file-submission" enctype="multipart/form-data" onsubmit="return validateFile();">
+                                        <input name="userId" id="userId" value="{{userId}}" hidden>
+                                        <label class="form-label">Upload new Profile Picture</label>
+                                        <div class="input-group mb-6">
+                                            <input class="form-control form-control-sm" id="formFile" type="file" name="submission">
+                                            <input class="btn btn-outline-primary btn-sm" id = "button" type="submit" value="Upload">
+                                        </div>
+                                    </form>
+                                    <div class="alert alert-danger" role="alert" id="fileErrMsg" style="display:none;"></div> 
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-5">
+                                    <div class="input-group mb-3">
+                                        <input type="text" value="{{username}}" disabled id="username" class="form-control form-control-sm">
+                                        <button class="btn btn-outline-primary" onclick="showEditUsername()">Edit</button>
+                                    </div>
+                                </div>
+                                <div class="col-md-5">
+                                    <div class="input-group mb-3">
+                                        <input type="text" value="{{phone}}" disabled id="phone" class="form-control form-control-sm">
+                                        <button class="btn btn-outline-primary" onclick="showEditPhone()">Edit</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-5">
+                                    <div class="input-group mb-3">
+                                        <input type="text" value="{{email}}" disabled id="email" class="form-control form-control-sm">
+                                        <button class="btn btn-outline-primary" onclick="showEditEmail()">Edit</button>
+                                    </div>
+                                </div>
+                            </div>   
+                            <div class="row">
+                                <div class="col-md-5">
+                                    <button class="btn btn-outline-primary" onclick="showEditPassword()">Reset Password</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="edit-username" class="spa-page"></div>
+                        <div id="edit-phone" class="spa-page"></div>
+                        <div id="edit-email" class="spa-page"></div>
+                        <div id="edit-password" class="spa-page"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function validateFile(){
+        let file = document.getElementById("formFile").value
+        let fileNameList = file.split('.')
+        let fileType = fileNameList[fileNameList.length-1]
+
+        if(file == "" || fileType != "jpg"){
+            document.getElementById("fileErrMsg").innerHTML = "Please upload a .jpg file"
+            document.getElementById("fileErrMsg").style.display = 'block'
+            return false
+        }
+        document.getElementById("fileErrMsg").style.display = 'none'
+        return true
+    }
+
+    function switchPage(page) {
+        let availPages = document.getElementsByClassName('spa-page')
+        for (let p of availPages) {
+            p.style.display = 'none'
+        }
+        document.getElementById(page).style.display = 'block'
+    }
+
+    function showEditUsername(){
+        switchPage("edit-username")
+        let html = `
+        <label class="form-label">New Username:</label>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="input-group mb-1">
+                    <input placeholder="username" type="text" name="newUsername" id="newUsername" class="form-control form-control-sm">
+                </div>
+                <div class="alert alert-danger" role="alert" id="userErrMsg" style="display:none;"></div>
+            </div>    
+            <div class="col-md-4">
+                <button class="btn btn-secondary btn-sm btn-danger" onclick="showLandingPage()">Cancel</button>
+                <button class="btn btn-secondary btn-sm btn-success" onclick="updateUsername()">Save Changes</button>
+            </div>
+                  
+        </div>
+        `
+        document.getElementById("edit-username").innerHTML = html
+    }
+
+    function showEditPhone(){
+        switchPage("edit-phone")
+        let html = `
+        <label class="form-label">New Phone Number:</label>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="input-group mb-1">
+                    <input placeholder="12345678" type="tel" name="newPhone" id="newPhone" class="form-control form-control-sm">
+                </div>
+                <div class="alert alert-danger" role="alert" id="phoneErrMsg" style="display:none;">Enter a valid phone number</div>
+            </div>    
+            <div class="col-md-4">
+                <button class="btn btn-secondary btn-sm btn-danger" onclick="showLandingPage()">Cancel</button>
+                <button class="btn btn-secondary btn-sm btn-success" onclick="updatePhone()">Save Changes</button>
+            </div>      
+        </div>
+        `
+        document.getElementById("edit-phone").innerHTML = html
+    }
+
+    function showEditEmail(){
+        switchPage("edit-email")
+        let html = `
+        <label class="form-label">New Email:</label>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="input-group mb-1">
+                    <input placeholder="name@gmail.com" type="email" name="newEmail" id="newEmail" class="form-control form-control-sm">
+                </div>
+                <div class="alert alert-danger" role="alert" id="emailErrMsg" style="display:none;"></div>
+            </div>    
+            <div class="col-md-4">
+                <button class="btn btn-secondary btn-sm btn-danger" onclick="showLandingPage()">Cancel</button>
+                <button class="btn btn-secondary btn-sm btn-success" onclick="updateEmail()">Save Changes</button>
+            </div>        
+        </div>
+        `
+        document.getElementById("edit-email").innerHTML = html
+    }
+
+    function showEditPassword(){
+        switchPage("edit-password")
+        let html = `
+        <div class="row">
+            <div class="col-md-2">Current Password</div>
+            <div class="col-md-6">
+                <div class="input-group mb-3">
+                    <span class="input-group-text">
+                            <svg class="icon">
+                            <use xlink:href="/static/vendors/@coreui/icons/svg/free.svg#cil-lock-locked"></use>
+                            </svg>
+                    </span>
+                    <label></label>
+                    <input class="form-control" type="password" name="oldPass" id="oldPass" placeholder="Current Password">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-2">New Password</div>
+            <div class="col-md-6">
+                <div class="input-group mb-3">
+                    <span class="input-group-text">
+                            <svg class="icon">
+                            <use xlink:href="/static/vendors/@coreui/icons/svg/free.svg#cil-lock-locked"></use>
+                            </svg>
+                    </span>
+                    <label></label>
+                    <input class="form-control" type="password" name="newPass" id="newPass" placeholder="New Password">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-2">Confirm New Password</div>
+            <div class="col-md-6">
+                <div class="input-group mb-3">
+                    <span class="input-group-text">
+                            <svg class="icon">
+                            <use xlink:href="/static/vendors/@coreui/icons/svg/free.svg#cil-lock-locked"></use>
+                            </svg>
+                    </span>
+                    <label></label>
+                    <input class="form-control" type="password" name="confNewPass" id="confNewPass" placeholder="Confirm New Password">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-8">
+                <div class="alert alert-danger" role="alert" id="passErrMsg" style="display:none;"></div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3"></div>
+        </div> 
+        <br>
+        <div class="row justify-content-center">
+            <div class="col-md-4">
+                <button class="btn btn-secondary btn-sm btn-danger" onclick="showLandingPage()">Cancel</button>
+                <button class="btn btn-secondary btn-sm btn-success" onclick="updatePassword()">Save Changes</button>
+            </div>
+        </div> 
+        `
+        document.getElementById("edit-password").innerHTML = html
+    }
+
+    async function updateUsername(){
+        let response = await fetch('/api/user')
+        let allUsers = await response.json();
+        let newuser = document.getElementById("newUsername").value
+        let errMsg = document.getElementById("userErrMsg")
+        for(let u of allUsers){
+            if(u.username == newuser){
+                errMsg.innerHTML = "Username already taken"
+                errMsg.style.display = "block"
+                return
+            }
+        }
+        if(newuser.trim()==""){
+            errMsg.innerHTML = "Enter a valid username"
+            errMsg.style.display = "block"
+            return
+        }
+        else{
+            errMsg.style.display = "none"
+            let username= document.getElementById("username").value
+            document.getElementById("username").value = newuser
+            let update={
+                newuser: newuser
+            }
+            await fetch(`/api/user/${username}/username`,{
+                method:"PATCH",
+                headers:{
+                    'Content-Type':'application/json'
+                },
+                body:JSON.stringify(update)
+            })   
+            await showLandingPage()
+        }
+    }
+
+    async function updatePhone(){
+        let newPhone = document.getElementById("newPhone").value
+        let errMsg = document.getElementById("phoneErrMsg")
+        if(isNaN(Number(newPhone)) || newPhone.length != 8){
+            errMsg.style.display = "block"
+            return
+        }
+        errMsg.style.display = "none"
+        document.getElementById("phone").value = newPhone
+        let username= document.getElementById("username").value
+        let update={
+            newPhone: newPhone
+        }
+        await fetch(`/api/user/${username}/phone`,{
+            method:"PATCH",
+            headers:{
+                'Content-Type':'application/json'
+            },
+            body:JSON.stringify(update)
+        })   
+        await showLandingPage()
+    }
+
+    async function updateEmail(){
+        let newEmail = document.getElementById("newEmail").value
+        let errMsg = document.getElementById("emailErrMsg")
+        if(!newEmail.includes('@') || newEmail.indexOf('@') == 0 || newEmail.length-1-newEmail.indexOf('@') < 3){
+            errMsg.style.display = "block"
+            errMsg.innerHTML = "Enter a valid email"
+            return
+        }
+        let response = await fetch('/api/user')
+        let allUsers = await response.json();
+        for(let u of allUsers){
+            if(u.email == newEmail){
+                errMsg.innerHTML = "Email already taken"
+                errMsg.style.display = "block"
+                return
+            }
+        }
+
+        errMsg.innerHTML = ""
+        errMsg.style.display = "none"
+        document.getElementById("email").value = newEmail
+        let username= document.getElementById("username").value
+        let update={
+            newEmail: newEmail
+        }
+        await fetch(`/api/user/${username}/email`,{
+            method:"PATCH",
+            headers:{
+                'Content-Type':'application/json'
+            },
+            body:JSON.stringify(update)
+        })   
+        await showLandingPage()
+    }
+
+    async function updatePassword(){
+        let oldPass = document.getElementById("oldPass").value
+        let errMsg = document.getElementById("passErrMsg")
+        let username= document.getElementById("username").value
+        let pass = {oldPassword: oldPass}
+        let response = 
+        await fetch(`/api/user/${username}/password-verify`,{
+            method:"POST",
+            headers:{
+                'Content-Type':'application/json'
+            },
+            body:JSON.stringify(pass)
+        })
+        let result = await response.json()
+        if (!result.flag){
+            errMsg.style.display = "block"
+            errMsg.innerHTML = "Current Password is wrong!!"
+            return
+        }
+
+        let newPass = document.getElementById("newPass").value
+        if(newPass == oldPass){
+            errMsg.style.display = "block"
+            errMsg.innerHTML = "The old password and the new password is the same"
+            return
+        }
+
+        let confNewPass = document.getElementById("confNewPass").value
+
+        if(newPass.trim() == ""){
+            errMsg.style.display = "block"
+            errMsg.innerHTML = "Please enter a new password"
+            return
+        }
+
+        if(newPass != confNewPass){
+            errMsg.style.display = "block"
+            errMsg.innerHTML = "Confirm Password doesn't match"
+            return
+        }
+        errMsg.style.display = "none"
+        errMsg.innerHTML = ""
+        let update={
+            newPassword: newPass
+        }
+        await fetch(`/api/user/${username}/password`,{
+            method:"PATCH",
+            headers:{
+                'Content-Type':'application/json'
+            },
+            body:JSON.stringify(update)
+        }) 
+        await switchPage("landing-page")  
+    }
+
+    function showLandingPage(){
+        switchPage("landing-page")
+    }
+
+    showLandingPage()
+</script>

@@ -1,0 +1,13 @@
+{
+  "dependencies": {
+    "@img/sharp-win32-x64": "^0.33.0",
+    "cookie-parser": "^1.4.6",
+    "express": "^4.18.2",
+    "express-fileupload": "^1.4.3",
+    "express-handlebars": "^7.1.2",
+    "jimp": "^0.22.10",
+    "mongodb": "^6.3.0",
+    "nodemailer": "^6.9.7",
+    "sharp": "^0.33.0"
+  }
+}

@@ -1,0 +1,35 @@
+<body>
+            <div class="row">
+                <div class="col-12">
+                    <div class="card mb-4">
+                        <div class="card-header"><strong>Record Fuel Delivery</strong></div>
+                        <div class="card-body">
+                            <div class="example">
+                                <div class="tab-content rounded-bottom">
+                                    <form method="post" action="/record-delivery/{{id}}">
+                                    <div class="tab-pane p-3 active preview" role="tabpanel" id="preview-1000">
+                                        <div class="mb-3">
+                                            <label class="form-label" for="deliveryDate">Date of Fuel Delivery:</label>
+                                            <input class="form-control" type="date" id="deliveryDate" name="deliveryDate">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label" for="fuelReceivedPremium">Premium Fuel Received (liters):</label>
+                                            <input class="form-control" type="number" id="fuelReceivedPremium" name="fuelReceivedPremium">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label" for="fuelReceivedSuper">Premium Fuel Received (liters):</label>
+                                            <input class="form-control" type="number" id="fuelReceivedSuper" name="fuelReceivedSuper">
+                                        </div>
+                                        <button class="btn btn-primary mb-3" type="submit">Submit</button>                                        
+                                    </div>
+                                    </form>
+                                {{#if message}}
+                                    <div style="color:red">{{message}}</div>
+                                {{/if}}                                    
+                                </div> 
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+</body>

@@ -1,0 +1,166 @@
+<head>
+    <script src="/static/vendors/chart.js/js/chart.min.js"></script>
+    {{!-- <script src="node_modules/@coreui/coreui/dist/js/coreui.bundle.min.js"></script>
+    <script src="node_modules/simplebar/dist/simplebar.min.js"></script>
+    <script src="node_modules/chart.js/dist/chart.min.js"></script>
+    <script src="node_modules/@coreui/chartjs/dist/js/coreui-chartjs.js"></script> --}}
+    <script src="/static/js/charts.js"></script>
+    <script> 
+    </script>
+</head>
+<script>
+    async function showStationStat(e) {
+        e.preventDefault()
+        let stationID = document.getElementById("inlineFormSelectPref").value;
+        let response = await fetch(`/api/${stationID}`);
+        let details = await response.json();
+        let output = `
+        <div class="row" style='margin-top:10px'>
+            <!-- /.col-->
+            <div class="col-sm-6 col-lg-3">
+              <div class="card mb-4 text-white bg-primary">
+                <div class="card-body pb-0 d-flex justify-content-between align-items-start">
+                  <div>
+                    <div class="fs-4 fw-semibold">
+                        <h2 style="font-size:90%">Overview</h2>
+        `;
+        for (let c of details.record) {
+            output += `<p style="font-size:70%;">Total Sales: <span>${c.sales} QAR</span></p>`;
+        }
+        output += `                  </div>
+                  </div>
+                </div>
+                <div style="height:70px;">
+                  
+                </div>
+              </div>
+            </div>
+            <!-- /.col-->
+            <div class="col-sm-6 col-lg-3">
+              <div class="card mb-4 text-white bg-warning">
+                <div class="card-body pb-0 d-flex justify-content-between align-items-start">
+                  <div>
+                    <div class="fs-4 fw-semibold">
+                        <h2 style="font-size:90%">Fuel Prices</h2>
+        `;
+        for (let c of details.record) {
+            output += `
+            <p style="font-size:70%;">Premium Price: <span id="premiumPrice">${c.fuelPricePremium} QAR</span></p>
+            <p style="font-size:70%;">Super Price: <span id="superPrice">${c.fuelPriceSuper} QAR</span></p>            
+            `;
+        }
+        output += `                   </div>   
+                  </div>
+                </div>
+                <div style="height:30px;">
+                  
+                </div>
+              </div>
+            </div>
+          </div>        
+        `
+         
+        output += `
+        </div>    
+        `
+        output+=`
+        <div class="card mb-4">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h4 class="card-title mb-0">Performance Metrics - Sales Trend</h4>
+                    </div>
+                </div>
+            </div>
+            <div class="c-chart-wrapper" style="height:2000px;">
+                <canvas id="sales" style="height:100%;width:100%;"></canvas>
+            </div>
+        </div>`;
+        output+=`
+        <div class="card mb-4">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h4 class="card-title mb-0">Premium vs Super Petrol Sales Comparison</h4>
+                    </div>
+                </div>
+            </div>
+            <div class="c-chart-wrapper" style="height:300px;">
+                <canvas id="fuels" style="height:100%;width:100%;"></canvas>
+            </div>
+        </div>`;
+        
+        document.getElementById("switchStation").innerHTML = output;        
+        let salesData=details.salesData
+        const chartData = {
+        labels: salesData.map(item => item.date),
+        datasets: [{
+            label: 'Total Sales',
+            backgroundColor: 'rgba(151, 187, 205, 0.2)',
+            borderColor: 'rgba(151, 187, 205, 1)',
+            pointBackgroundColor: 'rgba(151, 187, 205, 1)',
+            pointBorderColor: '#fff',
+            data: salesData.map(item => item.totalSales)
+        }]
+        };
+
+        const lineChart = new Chart(document.getElementById('sales'), {
+        type: 'line',
+        data: chartData,
+        options: {
+            responsive: true,
+            maintainAspectRatio:false
+        }
+        });
+
+        let salesPrem = details.salesPrem
+        let salesSup = details.salesSup
+        let dates= []
+        for (let i of details.salesPrem){
+            dates.push(i.date)
+        }
+        
+        const barChart = new Chart(document.getElementById('fuels'), {
+        type: 'bar',
+        data: {
+            labels: dates,
+            datasets: [{
+                label: 'Premium',
+                backgroundColor: 'rgba(220, 220, 220, 0.5)',
+                borderColor: 'rgba(220, 220, 220, 0.8)',
+                highlightFill: 'rgba(220, 220, 220, 0.75)',
+                highlightStroke: 'rgba(220, 220, 220, 1)',
+                data: salesPrem.map(item => item.sales_premium)
+            }, {
+                label:'Super',
+                backgroundColor: 'rgba(151, 187, 205, 0.5)',
+                borderColor: 'rgba(151, 187, 205, 0.8)',
+                highlightFill: 'rgba(151, 187, 205, 0.75)',
+                highlightStroke: 'rgba(151, 187, 205, 1)',
+                data: salesSup.map(item => item.sales_super)
+            }]
+        },
+        options: {
+            responsive: true
+        }
+        });
+    }
+</script>
+<form class="row row-cols-lg-auto g-3 align-items-center" >
+    <div class="col-12">
+    <label class="visually-hidden" for="inlineFormSelectPref">Preference</label>
+    <select class="form-select" id="inlineFormSelectPref">
+        <option selected="">Choose a Station</option>
+        {{#each stationNames}}
+            <option value="{{this.stationID}}">{{this.stationName}}</option>
+        {{/each}}
+    </select>
+    </div>
+    <div class="col-12">
+    <button class="btn btn-primary" onclick="showStationStat(event)">Submit</button>
+</div>
+</form>
+
+<div id="switchStation">
+
+</div>

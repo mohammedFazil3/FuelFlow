@@ -1,0 +1,27 @@
+<body>
+    <div class="row">
+        <div class="col-12">
+            <div class="card mb-4">
+                <div class="card-header"><strong>Record for {{date}}</strong></div>
+                <div class="card-body">
+                    <div class="example">
+                        <div class="tab-content rounded-bottom">
+                                {{#if data}}
+                                    <p>Station: {{data.stationId}}</p>
+                                    <p>Sales for Premium: {{data.sales_premium}}</p>
+                                    <p>Sales for Super: {{data.sales_super}}</p>
+                                    <p>Fuel Level for Premium: {{data.fuelLevelPremium}}</p>
+                                    <p>Fuel Level for Super: {{data.fuelLevelSuper}}</p>
+                                    <p>Fuel Recieved for Premium: {{data.fuelReceivedPremium}}</p>
+                                    <p>Fuel Recieved for Super: {{data.fuelReceivedSuper}}</p>
+                                {{else}}
+                                    <p>No data found for station {{id}} on {{date}}</p>
+                                {{/if}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button class="btn btn-primary mb-3"><a class="nav-link" href="/manager/{{id}}/checkRecords">Back</a></button>
+        </div>
+    </div>
+</body>

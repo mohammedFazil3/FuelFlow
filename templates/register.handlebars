@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <base href="./">
+    <meta charset="utf-8">
+    <!-- Main styles for this application-->
+    <link href="/static/css/style.css" rel="stylesheet">
+    <!-- We use those styles to show code examples, you should remove them in your application.-->
+    <link href="/static/css/examples.css" rel="stylesheet">
+
+    <script>
+      async function createAccount(){
+        let errMsg = document.getElementById("error-message");
+        errMsg.innerHTML=""
+
+        let checkEm = await checkEmail()
+        let checkUs = await checkUsername()
+        let checkPh = checkPhone()
+        let confPa = confPassword()
+        let checkPa = checkPassword()
+        let fileUp = await fileUpload()
+        if(!checkEm || ! checkUs || !checkPh || !confPa || !checkPa || !fileUp){
+          errMsg.innerHTML="Please recheck your inputs"
+          errMsg.style.color="red"
+          errMsg.style.display = "block"
+          return
+        }
+
+        let username = document.getElementById("username").value;
+        let email = document.getElementById("email").value;
+        let password = document.getElementById("password").value;
+        let phone = document.getElementById("phone").value;
+        let type = "standard"
+
+        let details={
+          username : username,
+          password :password,
+          userType:type,
+          email : email,
+          phone :phone,
+          registeredDate:new Date(),
+          userId:'{{userId}}'
+        }
+        console.log(details)
+        await fetch(`/api/user`,{
+          method:"POST",
+          headers:{
+              'Content-Type':'application/json'
+          },
+          body:JSON.stringify(details)
+        }) 
+        window.location.href = "/login";
+      }
+
+      async function checkUsername(){
+        let errMsg = document.getElementById("uname-error");
+        let response = await fetch(`/api/user`)
+        let allUsers = await response.json();
+
+        let userNew = document.getElementById("username").value; 
+
+        for(let u of allUsers){
+            if(u.username == userNew){
+                errMsg.innerHTML = "Username already taken"
+                errMsg.style.display = "block"
+                errMsg.style.color="red"
+                return false
+            }
+        }
+        if(userNew.trim()==""){
+            errMsg.innerHTML = "Enter a valid username"
+            errMsg.style.display = "block"
+            errMsg.style.color="red"
+            return false
+        }
+        else{
+            errMsg.style.display = "none"
+            return true
+        }
+      }
+
+      async function checkEmail(){
+        let errMsg = document.getElementById("email-error");
+
+        let emailNew = document.getElementById("email").value; 
+
+        if(emailNew.trim()=="" || !emailNew.includes('@') || emailNew.indexOf('@') == 0 || emailNew.length-1-emailNew.indexOf('@') < 3){
+            errMsg.innerHTML = "Enter a valid email"
+            errMsg.style.display = "block"
+            errMsg.style.color="red"
+            return false
+        }
+        let response = await fetch('/api/user')
+        let allUsers = await response.json();
+        for(let u of allUsers){
+            if(u.email == emailNew){
+                errMsg.innerHTML = "Email already taken"
+                errMsg.style.display = "block"
+                return false
+            }
+        }
+          errMsg.style.display = "none"
+          return true
+      }
+
+      function checkPhone(){
+        let errMsg = document.getElementById("phone-error");
+
+        let phoneNew = document.getElementById("phone").value; 
+
+        if(phoneNew.trim()=="" || isNaN(Number(phoneNew)) || phoneNew.length != 8){
+            errMsg.innerHTML = "Enter a valid phone number"
+            errMsg.style.display = "block"
+            errMsg.style.color="red"
+            return false
+        }
+        else{
+            errMsg.style.display = "none"
+            return true
+        }
+      }
+
+      function checkPassword(){
+        let errMsg = document.getElementById("pass-error");
+
+        let passNew = document.getElementById("password").value; 
+
+        if(passNew.trim()==""){
+            errMsg.innerHTML = "Enter a valid password"
+            errMsg.style.display = "block"
+            errMsg.style.color="red"
+            return false
+        }
+        else{
+            errMsg.style.display = "none"
+            return true
+        }
+      }
+
+      function confPassword(){
+        let errMsg = document.getElementById("confPass-error");
+
+        let passNew = document.getElementById("password").value; 
+        let confPassNew = document.getElementById("repeatPassword").value; 
+
+        if(passNew!=confPassNew){
+            errMsg.innerHTML = "Passwords does not match"
+            errMsg.style.display = "block"
+            errMsg.style.color="red"
+            return false
+        }
+        if(confPassNew.trim()==""){
+            errMsg.innerHTML = "Enter a valid password"
+            errMsg.style.display = "block"
+            errMsg.style.color="red"
+            return false
+        }
+        else{
+            errMsg.style.display = "none"
+            return true
+        }
+      }
+
+      async function fileUpload(){
+        let errMsg= document.getElementById('file-error')
+        
+        let username = document.getElementById('username').value
+        let file2 =document.getElementById("file").files[0];
+        let data = new FormData();
+        data.append('submission',file2) 
+        data.append('userId',{{userId}})
+        let file = document.getElementById("file").value
+
+        let fileNameList = file.split('.')
+        let fileType = fileNameList[fileNameList.length-1]
+        if(fileType!="jpg"){
+          errMsg.innerHTML = "Upload .jpg type file"
+          errMsg.style.display = "block"
+          errMsg.style.color="red"
+          return false
+        }
+        errMsg.style.display = "none"
+        errMsg.innerHTML = ""
+        await fetch(`/api/file`,{
+          method:"POST",
+          body:data
+        })
+        return true
+      }
+    
+    </script>
+
+  </head>
+  <body>
+    <div class="bg-light min-vh-100 d-flex flex-row align-items-center">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-md-6">
+            <div class="card mb-4 mx-4">
+              <div class="card-body p-4">
+                <h1>Register</h1>
+                <p class="text-medium-emphasis">Create your account</p>
+                
+                <div class="input-group mb-3"><span class="input-group-text">
+                  <svg class="icon">
+                    <use xlink:href="/static/vendors/@coreui/icons/svg/free.svg#cil-user"></use>
+
+                  </svg></span>
+                  <input class="form-control" type="text" onblur="checkUsername()" id="username" name="username" placeholder="Username">
+                
+                </div>
+                <div class="col-md-8">
+                  <div class="alert alert-danger" role="alert" id="uname-error" style="display:none;"></div>
+                </div>
+                <div class="input-group mb-3"><span class="input-group-text">
+                  <svg class="icon">
+                    <use xlink:href="/static/vendors/@coreui/icons/svg/free.svg#cil-envelope-open"></use>
+                  </svg></span>
+                  <input class="form-control" type="text" id="email" name="email" onblur="checkEmail()" placeholder="Email">
+                
+                </div>
+                <div class="col-md-8">
+                  <div class="alert alert-danger" role="alert" id="email-error" style="display:none;"></div>
+                </div>
+                <div class="input-group mb-3"><span class="input-group-text">
+                  <svg class="icon">
+                      <use xlink:href="/static/vendors/@coreui/icons/svg/free.svg#cil-lock-locked"></use>
+                  </svg></span>
+                  <input class="form-control" type="password" id="password" name="password" onblur="checkPassword()" placeholder="Password">
+                
+                </div>
+                <div class="col-md-8">
+                  <div class="alert alert-danger" role="alert" id="pass-error" style="display:none;"></div>
+                </div>
+                <div class="input-group mb-3"><span class="input-group-text">
+                    <svg class="icon">
+                    <use xlink:href="/static/vendors/@coreui/icons/svg/free.svg#cil-lock-locked"></use>
+                    </svg></span>
+                    <input class="form-control" type="password" id="repeatPassword" name="repeatPassword" onblur="confPassword()" placeholder="Confirm Password">
+                </div>
+                <div class="col-md-8">
+                  <div class="alert alert-danger" role="alert" id="confPass-error" style="display:none;"></div>
+                </div>
+                <div class="input-group mb-3"><span class="input-group-text">
+                    <svg class="icon">
+                    <use xlink:href="/static/vendors/@coreui/icons/svg/free.svg#cil-phone"></use>
+                    </svg></span>
+                <input class="form-control" id="phone" name="phone" onblur="checkPhone()" placeholder="Phone Number">
+                
+                </div>
+                <div class="col-md-8">
+                  <div class="alert alert-danger" role="alert" id="phone-error" style="display:none;"></div>
+                </div>
+                <div class="input-group mb-3"><span class="input-group-text">
+                  <svg class="icon">
+                    <use xlink:href="/static/vendors/@coreui/icons/svg/free.svg#cil-file"></use>
+                    </svg></span>
+                  <input class="form-control form-control-lg" id="file" type="file" name="submission">{{!-- #****** --}}
+                  <button class="btn btn-block btn-success" onclick="fileUpload()">Upload</button>
+                  
+                </div>
+                <div class="col-md-8">
+                  <div class="alert alert-danger" role="alert" id="file-error" style="display:none;"></div>
+                </div>
+
+                <button class="btn btn-block btn-success" onclick="createAccount()">Create Account</button>
+                
+                <div id="error-message" style="color:red"></div>
+                {{#if message}}
+                <div style="color:red">
+                  {{message}}
+                </div>
+                {{/if}}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

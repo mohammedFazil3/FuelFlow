@@ -1,0 +1,260 @@
+<head>
+<script>
+  async function checkRecord(){
+    let stationName = document.getElementById('inlineFormSelectPref').value
+    let date = new Date(document.getElementById('recordDate').value)//fix this part
+    console.log(date)
+    let data = await fetch(`/api/dailyRecords/${date}/${stationName}`)
+    data = await data.json();
+    let dataHTML = document.getElementById('checkRecordData')
+    date = date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+    if (Object.keys(data).length === 0){
+      dataHTML.innerHTML=`<p>No data found for station ${stationName} on ${date}</p>`
+    }else{
+      dataHTML.innerHTML=`
+    <div class="row">
+        <div class="col-12">
+            <div class="card mb-4">
+                <div class="card-header"><strong>Record for ${date}</strong></div>
+                <div class="card-body">
+                    <div class="example">
+                        <div class="tab-content rounded-bottom">      
+      <p>Sales for Premium: ${data.sales_premium}</p>
+      <p>Sales for Super: ${data.sales_super}</p>
+      <p>Fuel Level for Premium: ${data.fuelLevelPremium}</p>
+      <p>Fuel Level for Super: ${data.fuelLevelSuper}</p>
+      <p>Fuel Recieved for Premium: ${data.fuelReceivedPremium}</p>
+      <p>Fuel Recieved for Super: ${data.fuelReceivedSuper}</p> 
+      </div>
+      </div>
+      </div>
+      </div>
+      </div>
+      </div>     
+      `
+    }
+
+  }
+  async function displayInfo(event){
+    event.preventDefault()
+    let stationName = document.getElementById('inlineFormSelectPref').value
+    if(stationName!=''){
+      let stationInfo = document.getElementById("stationInfo")
+      let response = await fetch(`/api/${stationName}`)
+      let stationRec = await response.json()
+      stationRec = stationRec.record[0]
+      let location = stationRec.location
+      let locationLink = stationRec.locationLink
+      let fuelPricePremium = stationRec.fuelPricePremium
+      let fuelPriceSuper = stationRec.fuelPriceSuper
+      let sales = stationRec.sales
+      let recentResponse = await fetch(`/api/recentActivity/${stationName}`)
+      let recentActivity = await recentResponse.json()
+      console.log(recentActivity)
+      output=`
+      <div class="row">
+      <!-- /.col-->
+      <div class="col-sm-6 col-lg-3">
+      <div class="card mb-4 text-white bg-info">
+          <div class="card-body pb-0 d-flex justify-content-between align-items-start">
+          <div>
+              <div class="fs-4 fw-semibold">
+                  <p style="font-size:70%"> Location:${location}</p>
+                  <iframe src=${locationLink} style="border:0;height:100%;width:100%" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>                                              
+          </div>
+          </div>
+          </div>
+          <div style="height:0px;">
+          </div>
+      </div>
+      </div>            
+
+      <!-- /.col-->
+      <div class="col-sm-6 col-lg-3">
+      <div class="card mb-4 text-white bg-success">
+          <div class="card-body pb-0 d-flex justify-content-between align-items-start">
+          <div>
+              <div class="fs-4 fw-semibold">
+                  <p style="font-size:70%;">Premium Price: <span id="premiumPrice">${fuelPricePremium} QAR</span></p>
+                  <p style="font-size:70%;">Super Price: <span id="superPrice">${fuelPriceSuper} QAR</span></p>                                               
+              </div>   
+          </div>
+          </div>
+          <div style="height:116px;">
+          
+          </div>
+      </div>
+      </div>
+
+
+      <!-- /.col-->
+      <!-- /.col-->
+      <div class="col-sm-6 col-lg-3">
+        <div class="card mb-4 text-white bg-warning">
+          <div class="card-body pb-0 d-flex justify-content-between align-items-start">
+            <div>
+              <div class="fs-4 fw-semibold">
+                  <h2 style="font-size:90%">Sales</h2>
+                  <p style="font-size:70%;">Total Sales: <span>${sales} QAR</span></p>
+            </div>
+            </div>
+          </div>
+          <div style="height:120px;">
+            
+          </div>
+        </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="card mb-4">
+              <div class="card-header">Recent Activity</div>
+              <div class="card-body">
+                  <div>
+                      <p>Recent Sales:</p>
+                      <ul id="recentSales">
+      `
+                      for(let c of recentActivity){
+                          for(let b of c.stationRecord){
+                            console.log(b)
+                          output+=`                      
+                          <li>${b.name} - Date: ${c.date}, Amount: ${b.totalSales} QAR</li>
+                          `
+                          }
+
+                      
+                      }
+      output+=`</ul>
+      <p>Recent Fuel Deliveries:</p>
+      <ul id="recentDeliveries">
+      `
+      for(let c of recentActivity){
+        for(let b of c.stationRecord){
+          output+=`
+          <li>${b.name} - Date: ${c.date}, Amount: ${b.totalReceived} Liters</li>
+          `
+  }
+}
+output+=`                
+                </ul>
+            </div>
+        </div>
+      </div>  
+    </div>
+  </div>    
+<!-- /.col-->
+`
+output+=`
+<div class="row">
+    <div class="col-12">
+        <div class="card mb-4">
+            <div class="card-header"><strong>Check Record</strong></div>
+            <div class="card-body">
+                <div class="example">
+                    <div class="tab-content rounded-bottom">
+                        <div class="tab-pane p-3 active preview" role="tabpanel" id="preview-1000">
+                            <div class="mb-3">
+                                <label class="form-label" for="recordDate">Date of Fuel Delivery:</label>
+                                <input class="form-control" type="date" id="recordDate" name="recordDate">
+                            </div>
+                            <button class="btn btn-primary mb-3" type="submit" onclick='checkRecord()'>Submit</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+  <div id='checkRecordData'>
+  </div>
+</div
+`            
+stationInfo.innerHTML=output
+    }
+  }
+</script>
+</head>
+
+<div class="row">
+  <!-- /.col-->
+  <div class="col-sm-6 col-lg-3">
+    <div class="card mb-4 text-white bg-primary">
+      <div class="card-body pb-0 d-flex justify-content-between align-items-start">
+        <div>
+          <div class="fs-4 fw-semibold">
+              <h2 style="font-size:90%">Users</h2>
+              <p style="font-size:70%;">Total Users: <span>{{totalUsers}}</span></p>
+              <p style="font-size:70%;">Managers: <span>{{totalManagers}}</span></p>
+        </div>
+        </div>
+      </div>
+      <div style="height:30px;">
+        
+      </div>
+    </div>
+  </div>
+  <!-- /.col-->
+  <div class="col-sm-6 col-lg-3">
+    <div class="card mb-4 text-white bg-warning">
+      <div class="card-body pb-0 d-flex justify-content-between align-items-start">
+        <div>
+          <div class="fs-4 fw-semibold">
+              <h2 style="font-size:90%">Sales</h2>
+              <p style="font-size:70%;">Total Sales: <span>{{totalSales}} QAR</span></p>
+              <p style="font-size:70%;">Station Sales Avg.: <span >{{averageSale}} QAR</span></p>                       
+          </div>   
+        </div>
+      </div>
+      <div style="height:30px;">
+      </div>
+    </div>
+  </div>
+  <!-- /.col-->
+  <div class="col-sm-6 col-lg-3">
+    <div class="card mb-4 text-white bg-danger">
+      <div class="card-body pb-0 d-flex justify-content-between align-items-start">
+        <div>
+          <div class="fs-4 fw-semibold" style="text-align:left;">
+              <h2 style="font-size:90%">Alerts⚠</h2>
+              <ul>
+                {{#if lowFuelStations}}
+                <li style="font-size:70%">Low fuel Alert for 
+                  {{#each @root.lowFuelStations}}
+                  <span>{{this}}</span>
+                  {{/each}}
+                </li>
+                {{else}}
+                <li style="font-size:70%">All stations currently report a status of no alerts.</li>
+                {{/if}}
+              </ul>
+          </div>
+        </div>
+      </div>
+      <div style="height:48px;">
+        
+      </div>
+    </div>
+  </div>
+  <!-- /.col-->
+  <div class="col-md-12">
+  <div class="card mb-4">
+    <div class="card-header">Station Information:</div>
+    <div class="card-body">
+      <form class="row row-cols-lg-auto g-3 align-items-center" >
+          <div class="col-12">
+          <label class="visually-hidden" for="inlineFormSelectPref">Preference</label>
+          <select class="form-select" id="inlineFormSelectPref" onchange="displayInfo(event)">
+              <option selected="">Choose a Station</option>
+              {{#each stationNames}}
+                  <option value="{{this.stationID}}">{{this.stationName}}</option>
+              {{/each}}
+          </select>
+          </div>
+          <div class="col-12">
+      </div>
+      </form>
+      <div id="stationInfo" style="margin-top:10px">
+      </div>                
+    </div>
+  </div>
+  </div>
+</div>  

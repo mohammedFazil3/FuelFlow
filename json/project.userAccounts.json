@@ -1,0 +1,75 @@
+[{
+  "_id": {
+    "$oid": "65485bd9d0eb671845a76e95"
+  },
+  "username": "mazin",
+  "password": "abcd1234",
+  "userType": "admin"
+},
+{
+  "_id": {
+    "$oid": "65485bd9d0eb671845a76e94"
+  },
+  "username": "fazil",
+  "password": "abc123",
+  "userType": "admin"
+},
+{
+  "_id": {
+    "$oid": "65487c1dc9b51f45665875cb"
+  },
+  "username": "misbah",
+  "password": "abcde12345",
+  "userType": "admin"
+},
+{
+  "_id": {
+    "$oid": "65492648ad5c778f9c1fb147"
+  },
+  "username": "cbum",
+  "password": "1234",
+  "userType": "standard"
+},
+{
+  "_id": {
+    "$oid": "65492648ad5c778f9c1fb149"
+  },
+  "username": "noel",
+  "password": "1234",
+  "userType": "standard"
+},
+{
+  "_id": {
+    "$oid": "65492648ad5c778f9c1fb148"
+  },
+  "username": "shizzy",
+  "password": "1234",
+  "userType": "standard"
+},
+{
+  "_id": {
+    "$oid": "654f9a98dc5d6a9ebc26d811"
+  },
+  "username": "mark",
+  "password": "mark123",
+  "userType": "manager",
+  "stationID": "2"
+},
+{
+  "_id": {
+    "$oid": "654f9a98dc5d6a9ebc26d810"
+  },
+  "username": "tom",
+  "password": "tom123",
+  "userType": "manager",
+  "stationID": "1"
+},
+{
+  "_id": {
+    "$oid": "654f9a98dc5d6a9ebc26d812"
+  },
+  "username": "john",
+  "password": "john123",
+  "userType": "manager",
+  "stationID": "3"
+}]

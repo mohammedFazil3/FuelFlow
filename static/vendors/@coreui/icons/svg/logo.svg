@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100" height="100" fill="none" stroke="currentColor" stroke-width="2">
+  <circle cx="256" cy="256" r="200" />
+  <line x1="256" y1="160" x2="256" y2="352" />
+  <line x1="160" y1="256" x2="352" y2="256" />
+  <polygon points="256,160 304,208 208,208" />
+  <polygon points="160,256 208,304 208,208" />
+  <polygon points="352,256 304,304 304,208" />
+  <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-size="120" fill="currentColor" font-family="Arial, sans-serif">F</text>
+</svg>

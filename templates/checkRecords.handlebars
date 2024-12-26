@@ -1,0 +1,24 @@
+<body>
+    <div class="row">
+        <div class="col-12">
+            <div class="card mb-4">
+                <div class="card-header"><strong>Check Record</strong></div>
+                <div class="card-body">
+                    <div class="example">
+                        <div class="tab-content rounded-bottom">
+                            <form method="get" action="/check-records/{{id}}">
+                            <div class="tab-pane p-3 active preview" role="tabpanel" id="preview-1000">
+                                <div class="mb-3">
+                                    <label class="form-label" for="recordDate">Date of Fuel Delivery:</label>
+                                    <input class="form-control" type="date" id="recordDate" name="recordDate">
+                                </div>
+                                <button class="btn btn-primary mb-3" type="submit">Submit</button>
+                            </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>

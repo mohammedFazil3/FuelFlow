@@ -1,0 +1,90 @@
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="/static/vendors/@coreui/chartjs/css/coreui-chartjs.css" rel="stylesheet">
+</head>
+<body>
+ 
+        {{#each records}}
+          <!-- /.row-->
+          <div class="row">
+            <div class="col-md-12">
+              <div class="card mb-4">
+                <div class="card-header">Station:{{this.name}}</div>
+                <div class="card-body">
+                    <div>
+                        <div class="row">
+                            <!-- /.col-->
+                            <div class="col-sm-6 col-lg-3">
+                            <div class="card mb-4 text-white bg-primary">
+                                <div class="card-body pb-0 d-flex justify-content-between align-items-start">
+                                <div class="row">
+                                <div class="col-12">
+                                        <p class="fs-6 fw-semibold"> Location:{{this.location}}</p>
+                                        <iframe src={{this.locationLink}} style="border:0;width:100%"  loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>                                              
+                                </div>
+                                </div>
+                                </div>
+                                <div style="height:0px;">
+                                </div>
+                            </div>
+                            </div>            
+                        
+                            <!-- /.col-->
+                            <div class="col-sm-6 col-lg-3">
+                            <div class="card mb-4 text-white bg-warning">
+                                <div class="card-body pb-0 d-flex justify-content-between align-items-start">
+                                <div>
+                                    <div class="fs-4 fw-semibold">
+                                        <p style="font-size:70%;">Premium Price: <span id="premiumPrice">{{this.fuelPricePremium}} QAR</span></p>
+                                        <p style="font-size:70%;">Super Price: <span id="superPrice">{{this.fuelPriceSuper}} QAR</span></p>                                               
+                                    </div>   
+                                </div>
+                                </div>
+                                <div style="height:116px;">
+                                
+                                </div>
+                            </div>
+                            </div>
+
+                    
+                            <!-- /.col-->
+                            <div class="col-sm-6 col-lg-3">
+                            <div class="card mb-4 text-white bg-danger">
+                                <div class="card-body pb-0 d-flex justify-content-between align-items-start">
+                                <div class="col-12">
+                                    <div class="fs-4 fw-semibold">
+                                        <h2 class="fs-6">Alerts:</h2>
+                                        {{#if this.fuelLevelP}}
+                                        <p class="fs-6 bg-danger-subtle" >Low Fuel ⚠<br> Premium Level:{{this.fuelLevelPremium}} </p>
+                                        {{else}}
+                                        <p class="fs-6;">Premium Level:{{this.fuelLevelPremium}} </p>
+                                        {{/if}}
+                                        {{#if this.fuelLevelS}}
+                                        <p class="fs-6 bg-danger-subtle" >Low Fuel ⚠<br> Super Level:{{this.fuelLevelSuper}}</p>
+                                        {{else}}
+                                        <p class="fs-6;">Super Level:{{this.fuelLevelSuper}}</p>
+                                        {{/if}}
+                                    </div>
+                                </div>
+                                </div>
+                                {{#if this.fuelLevelP}}
+                                <div style="height:42px;"></div>
+                                {{else this.fuelLevelS}}
+                                <div style="height:42px;"></div>
+                                {{else}}
+                                <div style="height:84px;"></div>
+                                {{/if}}                            
+                                
+                            </div>
+                            </div>
+                            <!-- /.col-->
+                        </div>
+              
+                    </div>
+                </div>
+              </div>  
+            </div>
+          </div>    
+        {{/each}}
+</body>
+</html>

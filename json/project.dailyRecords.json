@@ -1,0 +1,112 @@
+[{
+  "_id": {
+    "$oid": "655257e5fee8a54f98c1ec47"
+  },
+  "date": {
+    "$date": "2023-11-13T00:00:00.000Z"
+  },
+  "stationRecord": [
+    {
+      "stationId": "1",
+      "sales_premium": 600,
+      "sales_super": 700,
+      "fuelLevelPremium": 2200,
+      "fuelLevelSuper": 2000,
+      "fuelReceivedPremium": 1200,
+      "fuelReceivedSuper": 1300
+    },
+    {
+      "stationId": "2",
+      "sales_premium": 550,
+      "sales_super": 650,
+      "fuelLevelPremium": 1800,
+      "fuelLevelSuper": 2100,
+      "fuelReceivedPremium": 1100,
+      "fuelReceivedSuper": 1200
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "655257e5fee8a54f98c1ec48"
+  },
+  "date": {
+    "$date": "2023-11-12T00:00:00.000Z"
+  },
+  "stationRecord": [
+    {
+      "stationId": "1",
+      "sales_premium": 550,
+      "sales_super": 650,
+      "fuelLevelPremium": 2000,
+      "fuelLevelSuper": 1800,
+      "fuelReceivedPremium": 1100,
+      "fuelReceivedSuper": 1200
+    },
+    {
+      "stationId": "2",
+      "sales_premium": 600,
+      "sales_super": 700,
+      "fuelLevelPremium": 2200,
+      "fuelLevelSuper": 2000,
+      "fuelReceivedPremium": 1200,
+      "fuelReceivedSuper": 1300
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "655257e5fee8a54f98c1ec49"
+  },
+  "date": {
+    "$date": "2023-11-10T00:00:00.000Z"
+  },
+  "stationRecord": [
+    {
+      "stationId": "1",
+      "sales_premium": 500,
+      "sales_super": 600,
+      "fuelLevelPremium": 1500,
+      "fuelLevelSuper": 1400,
+      "fuelReceivedPremium": 1000,
+      "fuelReceivedSuper": 1100
+    },
+    {
+      "stationId": "2",
+      "sales_premium": 550,
+      "sales_super": 650,
+      "fuelLevelPremium": 1800,
+      "fuelLevelSuper": 2100,
+      "fuelReceivedPremium": 1100,
+      "fuelReceivedSuper": 1200
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "655257e5fee8a54f98c1ec4a"
+  },
+  "date": {
+    "$date": "2023-11-09T00:00:00.000Z"
+  },
+  "stationRecord": [
+    {
+      "stationId": "1",
+      "sales_premium": 500,
+      "sales_super": 600,
+      "fuelLevelPremium": 1500,
+      "fuelLevelSuper": 1400,
+      "fuelReceivedPremium": 1000,
+      "fuelReceivedSuper": 1100
+    },
+    {
+      "stationId": "2",
+      "sales_premium": 550,
+      "sales_super": 650,
+      "fuelLevelPremium": 1800,
+      "fuelLevelSuper": 2100,
+      "fuelReceivedPremium": 1100,
+      "fuelReceivedSuper": 1200
+    }
+  ]
+}]

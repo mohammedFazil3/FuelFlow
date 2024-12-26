@@ -1,0 +1,108 @@
+<script>
+    function validateForm() {
+        // Get form inputs
+        var name = document.getElementById("name").value;
+        var fuelLevelPremium = document.getElementById("fuelLevelPremium").value;
+        var fuelLevelSuper = document.getElementById("fuelLevelSuper").value;
+        var fuelPriceSuper = document.getElementById("fuelPriceSuper").value;
+        var fuelPricePremium = document.getElementById("fuelPricePremium").value;
+        var location = document.getElementById("location").value;
+        var locationLink = document.getElementById("locationLink").value;
+
+        // Get error message element
+        var errorMessage = document.getElementById("error-message");
+
+        // Validate inputs
+        if (!name || !fuelLevelPremium || !fuelLevelSuper || !fuelPriceSuper || !fuelPricePremium || !location || !locationLink) {
+            errorMessage.innerHTML = "All fields must be filled out";
+            return false;
+        }
+
+        // Validate fuel levels and prices are numbers
+        if (isNaN(Number(fuelLevelPremium)) || isNaN(Number(fuelLevelSuper)) || isNaN(Number(fuelPriceSuper)) || isNaN(Number(fuelPricePremium))) {
+            errorMessage.innerHTML = "Fuel levels and prices must be valid numbers";
+            return false;
+        }
+
+        // Clear any previous error message
+        errorMessage.innerHTML = "";
+
+        // If all validations pass, the form will be submitted
+        return true;
+    }
+
+    function toCamelCase(ID) {
+        str = document.getElementById(ID).value
+        
+        // Split the string into words
+        let words = str.split(/\s+/);
+
+        // Capitalize the first letter of each word after the first one
+        for (let i = 0; i < words.length; i++) {
+            words[i] = words[i][0].toUpperCase() + words[i].substring(1);
+        }
+       
+        // Join the words back into a single string
+        words = words.join(' ');
+        document.getElementById(ID).value=words
+    }
+
+</script>
+
+<body>
+    <div class="row">
+        <div class="col-12">
+            <div class="card mb-4">
+                <div class="card-header"><strong>Add a station</strong></div>
+                <div class="card-body">
+                    <div class="example">
+                        <div class="tab-content rounded-bottom">
+                            <form onsubmit="return validateForm()" method="post" action="/addStation-form">
+                            <div class="tab-pane p-3 active preview" role="tabpanel" id="preview-1000">
+                                <div class="mb-3">
+                                    <label class="form-label" for="stationID"></label>
+                                    <input class="form-control" type="text" id="ID" name="stationID" value="{{idNum}}" readonly>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label" for="name">Station Name:</label>
+                                    <input class="form-control" type="text" id="name" name="name"  onblur="toCamelCase('name')">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label" for="fuelLevelPremium">Fuel Level Premium:</label>
+                                    <input class="form-control" type="number" id="fuelLevelPremium" name="fuelLevelPremium">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label" for="fuelLevelSuper">Fuel Level Super:</label>
+                                    <input class="form-control" type="number" id="fuelLevelSuper" name="fuelLevelSuper">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label" for="fuelPriceSuper">Fuel Price Super:</label>
+                                    <input class="form-control" type="number" id="fuelPriceSuper" name="fuelPriceSuper">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label" for="fuelPricePremium">Fuel Price Premium:</label>
+                                    <input class="form-control" type="number" id="fuelPricePremium" name="fuelPricePremium">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label" for="location">Enter Location:</label>
+                                    <input class="form-control" type="text" id="location" name="location">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label" for="locationLink">Enter Location Link:</label>
+                                    <input class="form-control" type="text" id="locationLink" name="locationLink">
+                                </div>                                        
+                                <button class="btn btn-primary mb-3" type="submit">Submit</button>                                        
+                            </div>
+                            </form>
+
+                            <div id="error-message" style="color:red"></div>
+                            {{#if message}}
+                                <div style="color:red">{{message}}</div>
+                            {{/if}}
+                        </div> 
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>

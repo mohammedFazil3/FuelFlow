@@ -1,0 +1,130 @@
+<script src="/static/vendors/chart.js/js/chart.min.js"></script>
+<body>
+        <div class="row">
+            <!-- /.col-->
+            <div class="col-sm-6 col-lg-3">
+              <div class="card mb-4 text-white bg-primary">
+                <div class="card-body pb-0 d-flex justify-content-between align-items-start">
+                  <div>
+                    <div class="fs-4 fw-semibold">
+                        <h2 style="font-size:90%">Overview</h2>
+                         {{#each record}}
+                        <p style="font-size:70%;">Total Sales: <span>{{this.sales}} QAR</span></p>
+                        {{/each}}
+                  </div>
+                  </div>
+                </div>
+                <div style="height:70px;">
+                  
+                </div>
+              </div>
+            </div>
+            <!-- /.col-->
+            <div class="col-sm-6 col-lg-3">
+              <div class="card mb-4 text-white bg-warning">
+                <div class="card-body pb-0 d-flex justify-content-between align-items-start">
+                  <div>
+                    <div class="fs-4 fw-semibold">
+                        <h2 style="font-size:90%">Fuel Prices</h2>
+                        {{#each record}}
+                        <p style="font-size:70%;">Premium Price: <span id="premiumPrice">{{this.fuelPricePremium}} QAR</span></p>
+                        <p style="font-size:70%;">Super Price: <span id="superPrice">{{this.fuelPriceSuper}} QAR</span></p>
+                        {{/each}}                        
+                   </div>   
+                  </div>
+                </div>
+                <div style="height:30px;">
+                  
+                </div>
+              </div>
+            </div>
+            <!-- /.col-->
+            <div class="col-sm-6 col-lg-3">
+              <div class="card mb-4 text-white bg-danger">
+                <div class="card-body pb-0 d-flex justify-content-between align-items-start">
+                  <div>
+                    <div class="fs-4 fw-semibold" style="text-align:left;">
+                        <h2 style="font-size:90%">Low Fuel Warning</h2>
+                        <p style="font-size:70%;">Premium:<span id="premiumLevel">{{#if premiumLevel}}Yes{{else}}No{{/if}}</span></p>
+                        <p style="font-size:70%;">Super:<span id="superLevel">{{#if superLevel}}Yes{{else}}No{{/if}}</span></p>
+                    </div>
+                  </div>
+                </div>
+                <div style="height:30px;">
+                  
+                </div>
+              </div>
+            </div>
+            <!-- /.col-->
+          </div>        
+
+          <!-- /.row-->
+          <div class="row">
+            <div class="col-md-12">
+              <div class="card mb-4">
+                <div class="card-header">Recent Activity</div>
+                <div class="card-body">
+                    <div>
+                        <p>Recent Sales:</p>
+                        <ul id="recentSales">
+                        {{#each recentActivity}}
+                            {{#each this.stationRecord}}
+                            <li>Station {{this.stationId}} - Date: {{../this.date}}, Amount: {{this.totalSales}} QAR</li>
+                            {{/each}}
+                        {{/each}}
+                        </ul>
+
+                        <p>Recent Fuel Deliveries:</p>
+                        <ul id="recentDeliveries">
+                        {{#each recentActivity}}
+                            {{#each this.stationRecord}}
+                            <li>Station {{this.stationId}} - Date: {{../this.date}}, Amount: {{this.totalReceived}} Liters</li>
+                            {{/each}}
+                        {{/each}}
+                        </ul>
+                    </div>
+                </div>
+              </div>  
+            </div>
+          </div>    
+
+        <div class="card mb-4">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h4 class="card-title mb-0">Performance Metrics - Sales Trend</h4>
+                    </div>
+                </div>
+            </div>
+        <div class="c-chart-wrapper" style="height:300px;">
+            <canvas class="chart" id="salesChart" height="375" style="height:100%;width:100%;"></canvas>
+            <script>
+                document.addEventListener(  'DOMContentLoaded', function () {
+                let salesData={{{salesData}}}
+                const chartData = {
+                labels: salesData.map(item => item.date),
+                datasets: [{
+                    label: 'Total Sales',
+                    backgroundColor: 'rgba(151, 187, 205, 0.2)',
+                    borderColor: 'rgba(151, 187, 205, 1)',
+                    pointBackgroundColor: 'rgba(151, 187, 205, 1)',
+                    pointBorderColor: '#fff',
+                    data: salesData.map(item => item.totalSales)
+                }]
+                };
+
+                const lineChart = new Chart(document.getElementById('salesChart'), {
+                type: 'line',
+                data: chartData,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio:false
+                }
+                }); 
+            });
+            </script>
+        </div>            
+
+        </div>
+</body>
+</html>

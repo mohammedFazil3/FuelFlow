@@ -1,0 +1,111 @@
+<head>
+    <script>
+    function validateForm() {
+        let assignForm = document.getElementById('assignForm');
+        let checkboxes = document.querySelectorAll('input[type="checkbox"]');
+        let errorMessageDiv = document.getElementById('errorMessage');
+        errorMessageDiv.innerHTML = '';
+
+        let atLeastOneChecked = false;
+
+        for (let i = 0; i < checkboxes.length; i++) {
+            let checkbox = checkboxes[i];
+
+            if (checkbox.checked) {
+                atLeastOneChecked = true;
+
+                let selectElement = getSelectElement(checkbox);
+
+                if (selectElement.value === "") {
+                    errorMessageDiv.innerHTML = 'Please select a station for each checked user.';
+                    errorMessageDiv.style.color = 'red';
+                    return false;
+                }
+            } else {
+                let selectElement = getSelectElement(checkbox);
+
+                if (selectElement.value !== "") {
+                    errorMessageDiv.innerHTML = 'Please check the checkbox for each selected station.';
+                    errorMessageDiv.style.color = 'red';
+                    return false;
+                }
+            }
+        }
+
+        if (atLeastOneChecked) {
+            return true;
+        } else {
+            errorMessageDiv.innerHTML = 'Please select at least one standard user.';
+            errorMessageDiv.style.color = 'red';
+            return false;
+        }
+    }
+
+    function getSelectElement(checkbox) {
+        let tableRow = checkbox.closest('tr');
+        let selectElement = tableRow.querySelector('select');
+        return selectElement;
+    }
+    </script>
+</head>
+
+
+<body>
+    <div class="row">
+    <div class="col-md-12">
+        <div class="card mb-4">
+        <div class="card-header">User Accounts</div>
+        <div class="card-body">
+            <div class="row">
+                    <div class="table-responsive">
+                        <h4 class="card-title mb-0" style="text-align:center">Standard User Accounts</h4>
+                        <br>
+                        <form method="post" id="assignForm" onsubmit="return validateForm();">
+                        <table class="table border mb-0">
+                        <thead class="table-light fw-semibold">
+                            <tr class="align-middle">
+                            <th colspan="4" class="text-center">User</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{#each standardUsers}}
+                            <tr class="align-middle">
+                            <td>
+                                <input name="{{this.username}}" type="checkbox">
+                            </td>
+                            <td class="text-center">
+                                <div class="avatar avatar-md"><img class="avatar-img" src="/static/assets/img/avatars/{{this.userId}}.jpg" alt="{{this.username}}@email.com"><span class="avatar-status bg-success"></span></div>
+                            </td>
+                            <td>
+                                <div>{{this.username}}</div>
+                                <div class="small text-medium-emphasis"> Registered: {{this.registeredDate}}</div>
+                            </td>
+                            <td>
+                                <label for="stations">Station:</label>
+                                <select name="stations" id="stations" form="assignForm">
+                                    <option value="">Select an option</option>
+                                    {{#each @root.stationNames}}
+                                        <option value="{{this.stationID}}">{{this.stationName}}</option>
+                                    {{/each}}
+                                </select>
+                            </td>
+                            </tr>
+                            {{/each}}
+                        </tbody>
+                        </table>
+                        <div style="text-align:center">
+                            <br>
+                            <button class="btn btn-primary px-4" type="submit" class="text-center">Submit</button>                     
+                        </div>
+                        </form>
+                        <br>
+                        <div id="errorMessage">
+
+                        </div>
+                    </div>                                   
+            </div>
+        </div>
+        </div>
+    </div>
+    </div>
+</body>
