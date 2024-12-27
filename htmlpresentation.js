@@ -6,22 +6,28 @@ const flash = require('./flash.js')
 const fileupload = require('express-fileupload')
 const Jimp = require('jimp')
 
+// Initializing the Express app
 let app = express()
 app.use(fileupload())
+
+// Setting up view engine with Handlebars
 const handlebars = require('express-handlebars')
 app.set('views', __dirname+"/templates")
 app.set('view engine', 'handlebars')
 app.engine('handlebars', handlebars.engine())
+
+// Middleware for parsing request bodies and cookies
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded())
 app.use(cookieParser())
 app.use("/static",express.static(__dirname+"/static"));
 
-//function to display 404 page
+// Custom 404 error handling
 function function404(req, res) {
     res.status(404).render("error404", {layout:undefined})
 }
 
+// Routes for password reset functionality
 app.get('/forgetPassword',async (req,res)=>{
     let resetMsg = req.query.resetMsg
     res.render('forgetPassword',{layout:undefined,msg:resetMsg})
@@ -40,6 +46,7 @@ app.post('/forgetPassword',async (req,res)=>{
     res.redirect("/forgetPassword?resetMsg=Check your email account for the reset link")
 })
 
+// Routes for resetting password
 app.get('/reset-password',async(req,res)=>{
     let resetKey = Number(req.query.resetKey)
     let resetDetails = await business.getToken(resetKey)
@@ -62,7 +69,7 @@ app.post('/reset-password', async (req, res) => {
     res.redirect('/login?message=Your password has been reset successfully')
 })
 
-
+// API endpoint for handling file uploads
 app.post('/api/file',async (req,res)=>{
     let file = req.files.submission
     let userId = req.body.userId
@@ -76,6 +83,8 @@ app.post('/api/file',async (req,res)=>{
     res.send('OK')
 })
 
+
+//API endpoint for registering users
 app.put('/api/admin/station',async (req,res)=>{
     let id = req.body.stationID;
     let details = req.body;
@@ -125,6 +134,7 @@ app.patch('/api/user/:username/password',async(req,res)=>{
     res.send('ok')
 })
 
+//login page
 app.get('/login',async(req,res)=>{
     let sessionId = req.cookies.projectkey;
     let fm = await flash.getFlash(sessionId);
@@ -164,6 +174,7 @@ app.post('/login-form',async(req,res)=>{
     }
 })
 
+//registered-user view
 app.get('/standard',async(req,res)=>{
     let sessionId = req.cookies.projectkey;
     let sessionData = await business.getSessionData(sessionId);
@@ -191,11 +202,9 @@ app.get('/standard',async(req,res)=>{
     })
 })
 
+//Pfp submission
 app.post('/file-submission',async(req,res)=>{
     let file = req.files.submission
-
-    // let fileNameList = file.name.split('.')
-    // let fileType = fileNameList[fileNameList.length-1]
     const filePath = `${__dirname}/static/assets/img/avatars/${req.body.userId}.jpg`;
 
     await file.mv(filePath);
@@ -203,8 +212,6 @@ app.post('/file-submission',async(req,res)=>{
     const image = await Jimp.read(filePath);
     await image.resize(128,128);
     await image.writeAsync(filePath);   
-    // let filePath = `${__dirname}/static/assets/img/avatars/${req.body.userId}.${fileType}`
-    // await sharp(file.data).resize(128, 128).toFile(filePath)
     let sessionId = req.cookies.projectkey;
     let sessionData = await business.getSessionData(sessionId);
     
@@ -216,6 +223,7 @@ app.post('/file-submission',async(req,res)=>{
     res.redirect(`/${sessionData.data.userType}/profile`);
 })
 
+//Editing profile for registered users
 app.patch('/api/user/:username/username',async(req,res)=>{
     let oldUsername = req.params.username
     let newUsername = req.body.newuser
@@ -791,7 +799,6 @@ app.get("/admin/stat",async (req,res)=>{
     res.render("stat",{layout:"admin_layout",stationNames:stationNames,userId:userId})
 })
 
-//Misbah....    
 app.get('/admin/addStation',async(req,res)=>{
     let sessionId = req.cookies.projectkey;
     let sessionData = await business.getSessionData(sessionId);
@@ -856,6 +863,5 @@ app.get('/registerNow',async(req,res)=>{
     res.render('register',{layout:undefined,message:fm,userId:userId})
 })
 
-//......
 app.use(function404)
 app.listen(8000, () => { console.log("Running")})

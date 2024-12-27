@@ -7,6 +7,7 @@ let session = undefined
 let stations = undefined
 let dailyRecords = undefined
 
+// Connect to the MongoDB database and initialize collections
 async function connectDatabase() {
     if (!client) {
         client = new mongodb.MongoClient('INSERT YOUR MONGODB LINK HERE')
@@ -19,6 +20,7 @@ async function connectDatabase() {
     }
 }
 
+// Fetch a specific daily record by date
 async function findDailyRecord(date){
     if(typeof date === 'object' && date instanceof Date){
         date = date
@@ -30,7 +32,7 @@ async function findDailyRecord(date){
     return result[0];
 }
 
-
+// Check if a station exists in a record for a specific date
 async function checkStationInRecord(date, id){
     await connectDatabase();
     let records = await findDailyRecord(date);
@@ -45,11 +47,13 @@ async function checkStationInRecord(date, id){
     return false;
 }
 
+// Insert a new record into the dailyRecords collection
 async function insertRecord(data){
     await connectDatabase();
     await dailyRecords.insertOne(data);
 }
 
+// Update the received fuel details for a specific station on a given date
 async function updateRecievedFuel(date, id,  fuelReceivedPremium, fuelReceivedSuper){
     await connectDatabase();
     if(!await checkStationInRecord(date, id)){
@@ -62,6 +66,7 @@ async function updateRecievedFuel(date, id,  fuelReceivedPremium, fuelReceivedSu
     return result.modifiedCount
 }
 
+// Update total sales for a specific station on a given date
 async function updateSales(date, id, totalSales){
     let records = await findDailyRecord(date)
     let stationDayRecord;
@@ -78,6 +83,7 @@ async function updateSales(date, id, totalSales){
     await stations.updateOne({stationID: id}, {$set: {sales: newAddedSale}})
 }
 
+// Update a specific record with sales and fuel level details
 async function updateOneRecordSales(date,id,fuelLevelPremium,fuelLevelSuper,sales_premium,sales_super){
     await connectDatabase();
     let records = await findDailyRecord(date);
@@ -124,6 +130,7 @@ async function updateOneRecordSales(date,id,fuelLevelPremium,fuelLevelSuper,sale
     await insertRecord(data)
     return
 }
+// Update the fuel level for a station based on the latest daily record
 async function updateStationFuelLevel(id){
     let lastDateRecord = await getRecordsByDate(id)
     let stationDayRecord
@@ -136,6 +143,7 @@ async function updateStationFuelLevel(id){
     result = await stations.updateOne({stationID: id}, {$set: {fuelLevelPremium: stationDayRecord.fuelLevelPremium, fuelLevelSuper: stationDayRecord.fuelLevelSuper}})
 }
 
+// Functionality for updating user information
 async function updateUsername(oldUsername, newUsername){
     await connectDatabase();
     await users.updateOne({ username: oldUsername },{ $set: { username: newUsername } })
@@ -318,8 +326,6 @@ async function countStations(){
     return totalStations
 }
 
-
-//Misbah.......
 async function insertStation(data){
     await connectDatabase();
     await stations.insertOne(data);
@@ -341,8 +347,6 @@ async function getAllUsers(){
     let records = record.toArray()
     return records
 }
-
-//.........
 
 module.exports = {
     getUserDetails,
